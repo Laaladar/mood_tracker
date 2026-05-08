@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood Tracker</title>
     <style>
-        /* ОСНОВНЫЕ НАСТРОЙКИ ЦВЕТОВ И ШРИФТОВ */
         :root {
             --primary: #6c5ce7;
-            /* Основной фиолетовый цвет */
             --bg: #f4f7f6;
-            /* Светло-серый фон страницы */
         }
 
         body {
@@ -23,442 +19,253 @@
             align-items: center;
         }
 
-        /* --- ШИРОКАЯ ФИОЛЕТОВАЯ ШАПКА (HEADER) --- */
+        /* --- КОМПАКТНЫЙ ХИДЕР --- */
         header {
             background: var(--primary);
             width: 100%;
-            padding: 12px 0;
+            height: 55px; /* Фиксированная небольшая высота */
             position: fixed;
-            /* Прибиваем к верху экрана */
             top: 0;
             left: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .header-content {
             width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
-            /* Логотип влево, пользователь вправо */
             align-items: center;
-            padding: 0 40px;
-            /* Отступы от краев экрана */
+            padding: 0 25px;
             box-sizing: border-box;
             color: white;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
-            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
+        /* Общий контейнер для правой части */
         .user-bar {
-            font-size: 1rem;
             display: flex;
             align-items: center;
+            gap: 15px;
         }
 
-        /* Оформление ссылок и кнопок в шапке */
+        /* Группы Входа и Юзера внутри бара */
+        #guestZone, #loginForm, #regForm, #userInfo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Одинаковые инпуты и кнопки в шапке */
+        .user-bar input, .user-bar button {
+            height: 32px;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.85rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .user-bar input {
+            width: 110px;
+            padding: 0 10px;
+        }
+
+        .user-bar button {
+            background: white;
+            color: var(--primary);
+            font-weight: bold;
+            padding: 0 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .user-bar button:hover {
+            opacity: 0.9;
+        }
+
+        /* Ссылки в шапке */
         .user-bar a {
             color: white;
             text-decoration: none;
             font-size: 0.85rem;
-            margin-left: 15px;
-            opacity: 0.9;
+            white-space: nowrap;
         }
 
-        .user-bar a:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
-
-        /* Кнопка "Выйти" в виде аккуратной рамки */
         .logout-link {
-            font-weight: bold;
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 5px 15px;
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 4px 12px;
             border-radius: 6px;
-            margin-left: 20px !important;
-            transition: 0.2s;
         }
 
         .logout-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            text-decoration: none !important;
+            background: rgba(255,255,255,0.1);
         }
 
-        .user-bar input {
-    width: 120px;          /* Одинаковая фиксированная ширина для обоих полей */
-    height: 32px;          /* Одинаковая высота */
-    padding: 0 10px;       /* Отступы только по бокам, чтобы текст не прилипал */
-    border-radius: 8px;    /* Округляем как на твоем скриншоте */
-    border: none;
-    margin-left: 10px;
-    font-size: 0.85rem;
-    box-sizing: border-box; /* Важно: чтобы padding не увеличивал размер поля */
-}
-
-/* Убираем индивидуальное правило для #l_login, если оно мешает */
-#l_login, #l_pass {
-    width: 120px !important;
-}
-
-/* Чтобы кнопка тоже была в ряд и одной высоты */
-.user-bar button {
-    height: 32px;
-    padding: 0 15px;
-    background: white;
-    color: var(--primary);
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-        /* На случай, если логин все равно хочет быть широким, принудительно ставим auto */
-        #l_login {
-            width: 100px !important;
+        /* --- КАРТОЧКА --- */
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            width: 90%;
+            max-width: 450px;
+            margin-top: 100px;
+            margin-bottom: 50px;
         }
 
-            .user-bar button {
-                padding: 6px 15px;
-                background: white;
-                color: var(--primary);
-                border: none;
-                border-radius: 4px;
-                font-weight: bold;
-                cursor: pointer;
-                margin-left: 8px;
-            }
+        .hidden { display: none !important; }
 
-            /* --- ОСНОВНАЯ КАРТОЧКА ОПРОСА --- */
-            .card {
-                background: white;
-                padding: 2.5rem;
-                border-radius: 16px;
-                box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
-                width: 90%;
-                max-width: 450px;
-                margin-top: 100px;
-                /* Отступ, чтобы не заезжать под шапку */
-                margin-bottom: 50px;
-            }
+        /* Стили формы */
+        .field { margin-bottom: 1.2rem; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        input[type="range"] { width: 100%; accent-color: var(--primary); }
+        textarea, input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        
+        button#submit { 
+            background: var(--primary); color: white; border: none; padding: 14px; 
+            border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; 
+        }
 
-            h1 {
-                font-size: 1.5rem;
-                text-align: center;
-                margin-bottom: 2rem;
-                color: #333;
-            }
-
-            /* Стили полей ввода */
-            .field {
-                margin-bottom: 1.5rem;
-            }
-
-            label {
-                display: block;
-                font-weight: 600;
-                margin-bottom: 10px;
-                font-size: 0.95rem;
-                color: #444;
-            }
-
-            input[type="range"] {
-                width: 100%;
-                cursor: pointer;
-                accent-color: var(--primary);
-            }
-
-            .range-labels {
-                display: flex;
-                justify-content: space-between;
-                color: #aaa;
-                font-size: 0.75rem;
-                margin-top: 5px;
-            }
-
-            input[type="text"],
-            textarea {
-                width: 100%;
-                padding: 12px;
-                border: 1px solid #e0e0e0;
-                border-radius: 10px;
-                box-sizing: border-box;
-                font-size: 1rem;
-                outline: none;
-            }
-
-            input[type="text"]:focus,
-            textarea:focus {
-                border-color: var(--primary);
-            }
-
-            .radio-group {
-                display: flex;
-                gap: 25px;
-                margin-top: 5px;
-            }
-
-            .radio-group label {
-                font-weight: normal;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-
-            /* Кнопка отправки */
-            button#submit {
-                background: var(--primary);
-                color: white;
-                border: none;
-                padding: 16px;
-                border-radius: 12px;
-                width: 100%;
-                cursor: pointer;
-                font-weight: bold;
-                font-size: 1rem;
-                transition: 0.2s;
-                box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
-            }
-
-            button#submit:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 6px 15px rgba(108, 92, 231, 0.3);
-            }
-
-            /* ИСТОРИЯ ЗАПИСЕЙ */
-            .history {
-                margin-top: 2.5rem;
-                border-top: 1px solid #eee;
-                padding-top: 1.5rem;
-            }
-
-            .history-title {
-                font-weight: bold;
-                margin-bottom: 15px;
-                display: block;
-                color: #555;
-            }
-
-            .entry {
-                background: #fafafa;
-                border: 1px solid #f0f0f0;
-                padding: 15px;
-                border-radius: 12px;
-                margin-bottom: 12px;
-            }
-
-            .entry b {
-                color: var(--primary);
-                font-size: 0.9rem;
-            }
-
-            .entry i {
-                display: block;
-                margin: 5px 0;
-                color: #333;
-            }
-
-            .entry small {
-                color: #777;
-                line-height: 1.4;
-            }
-
-            .hidden {
-                display: none;
-            }
-
-            /* Класс для скрытия элементов */
+        .entry { background: #fafafa; padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #eee; font-size: 0.9rem; }
     </style>
 </head>
-
 <body>
 
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ -->
-    <header>
-        <div class="header-content">
-            <div class="logo">Mood Tracker</div>
-
-            <div class="user-bar" id="authBox">
-                <!-- Отображается, если пользователь НЕ вошел -->
-                <div id="guestZone">
-                    <span id="loginForm">
-                        <input type="text" id="l_login" placeholder="Логин">
-                        <input type="password" id="l_pass" placeholder="Пароль">
-                        <button onclick="login()">Войти</button>
-                        <a href="#" onclick="toggleAuth()">Регистрация</a>
-                    </span>
-                    <span id="regForm" class="hidden">
-                        <input type="text" id="r_login" placeholder="Логин">
-                        <input type="text" id="r_nick" placeholder="Имя">
-                        <input type="email" id="r_email" placeholder="Email">
-                        <input type="password" id="r_pass" placeholder="Пароль">
-                        <button onclick="register()">Создать</button>
-                        <a href="#" onclick="toggleAuth()">Назад</a>
-                    </span>
+<header>
+    <div class="header-content">
+        <div class="logo">Mood Tracker</div>
+        
+        <div class="user-bar">
+            <!-- Зона для гостей: видна, когда не вошли -->
+            <div id="guestZone">
+                <div id="loginForm">
+                    <input type="text" id="l_login" placeholder="Логин">
+                    <input type="password" id="l_pass" placeholder="Пароль">
+                    <button onclick="login()">Войти</button>
+                    <a href="#" onclick="toggleAuth()">Регистрация</a>
                 </div>
-
-                <!-- Отображается, когда пользователь ВОШЕЛ -->
-                <div id="userInfo" class="hidden">
-                    <span>Привет, <span id="userNick" style="font-weight: bold;"></span></span>
-                    <a href="#" class="logout-link" onclick="logout()">Выйти</a>
+                <div id="regForm" class="hidden">
+                    <input type="text" id="r_login" placeholder="Логин">
+                    <input type="text" id="r_nick" placeholder="Имя">
+                    <input type="password" id="r_pass" placeholder="Пароль">
+                    <button onclick="register()">Создать</button>
+                    <a href="#" onclick="toggleAuth()">Назад</a>
                 </div>
+            </div>
+
+            <!-- Зона пользователя: видна только после входа -->
+            <div id="userInfo" class="hidden">
+                <span>Привет, <b id="userNick"></b></span>
+                <a href="#" class="logout-link" onclick="logout()">Выйти</a>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- КОНТЕНТ ПРИЛОЖЕНИЯ -->
-    <div class="card">
-        <div id="appContent" class="hidden">
-            <h1>Как ты сейчас?</h1>
-
-            <div class="field">
-                <label>Настроение: <span id="moodVal">5</span></label>
-                <input type="range" id="moodRange" min="1" max="10" value="5">
-                <div class="range-labels"><span>1</span><span>10</span></div>
-            </div>
-
-            <div class="field">
-                <label>Состояние одним словом:</label>
-                <input type="text" id="oneWord" placeholder="Напр: Бодрое или воодушевленное">
-            </div>
-
-            <div class="field">
-                <label>Почему?</label>
-                <textarea id="whyNote" rows="2" placeholder="Опиши причину..."></textarea>
-            </div>
-
-            <div class="field">
-                <label>Счастлив ли ты прямо сейчас?</label>
-                <div class="radio-group">
-                    <label><input type="radio" name="happy" value="Да"> Да</label>
-                    <label><input type="radio" name="happy" value="Нет"> Нет</label>
-                </div>
-            </div>
-
-            <button id="submit">Сохранить состояние</button>
-
-            <div class="history">
-                <span class="history-title">Твоя история:</span>
-                <div id="historyList"></div>
-            </div>
+<div class="card">
+    <!-- Основной контент (скрыт для гостей) -->
+    <div id="appContent" class="hidden">
+        <h2 style="text-align: center; margin-top: 0;">Как ты сейчас?</h2>
+        <div class="field">
+            <label>Настроение: <span id="moodVal">5</span></label>
+            <input type="range" id="moodRange" min="1" max="10" value="5">
         </div>
+        <div class="field">
+            <label>Одним словом:</label>
+            <input type="text" id="oneWord" placeholder="...">
+        </div>
+        <div class="field">
+            <label>Почему?</label>
+            <textarea id="whyNote" rows="2"></textarea>
+        </div>
+        <button id="submit">Сохранить</button>
 
-        <!-- Сообщение для гостей -->
-        <div id="guestMsg" style="text-align:center; color: #999; padding: 20px 0;">
-            <p>Добро пожаловать!</p>
-            <p>Пожалуйста, войдите в систему, чтобы вести личный дневник настроения.</p>
+        <div style="margin-top: 25px;">
+            <b>История:</b>
+            <div id="historyList" style="margin-top: 10px;"></div>
         </div>
     </div>
 
-    <script>
-        // Настройка ползунка
-        const moodRange = document.getElementById('moodRange');
-        const moodVal = document.getElementById('moodVal');
-        moodRange.oninput = () => moodVal.innerText = moodRange.value;
+    <!-- Заглушка для гостей -->
+    <div id="guestMsg" style="text-align: center; color: #888;">
+        Пожалуйста, войдите, чтобы вести дневник.
+    </div>
+</div>
 
-        // Переключение между формами Входа и Регистрации
-        function toggleAuth() {
-            document.getElementById('loginForm').classList.toggle('hidden');
-            document.getElementById('regForm').classList.toggle('hidden');
-        }
+<script>
+    const moodRange = document.getElementById('moodRange');
+    const moodVal = document.getElementById('moodVal');
+    moodRange.oninput = () => moodVal.innerText = moodRange.value;
 
-        // Регистрация нового пользователя
-        async function register() {
-            const data = {
-                login: document.getElementById('r_login').value,
-                nickname: document.getElementById('r_nick').value,
-                email: document.getElementById('r_email').value,
-                password: document.getElementById('r_pass').value
-            };
-            const res = await fetch('/api/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            if (res.ok) { location.reload(); } // Авто-вход после регистрации
-            else { const err = await res.json(); alert(err.error); }
-        }
+    function toggleAuth() {
+        document.getElementById('loginForm').classList.toggle('hidden');
+        document.getElementById('regForm').classList.toggle('hidden');
+    }
 
-        // Авторизация пользователя
-        async function login() {
-            const data = {
-                login: document.getElementById('l_login').value,
-                password: document.getElementById('l_pass').value
-            };
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            if (res.ok) { location.reload(); }
-            else { alert("Неверный логин или пароль"); }
-        }
+    async function login() {
+        const data = { login: document.getElementById('l_login').value, password: document.getElementById('l_pass').value };
+        const res = await fetch('/api/login', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+        if (res.ok) location.reload(); else alert("Ошибка входа");
+    }
 
-        // Выход из системы
-        async function logout() {
-            await fetch('/api/logout');
-            location.reload();
-        }
-
-        // Проверка статуса входа при загрузке страницы
-        window.onload = async () => {
-            const res = await fetch('/api/mood');
-            if (res.ok) {
-                const data = await res.json();
-                // Показываем контент и ник пользователя
-                document.getElementById('appContent').classList.remove('hidden');
-                document.getElementById('guestMsg').classList.add('hidden');
-                document.getElementById('guestZone').classList.add('hidden');
-                document.getElementById('userInfo').classList.remove('hidden');
-                document.getElementById('userNick').innerText = data.nickname;
-                // Отрисовка истории
-                data.logs.forEach(renderEntry);
-            }
+    async function register() {
+        const data = { 
+            login: document.getElementById('r_login').value, 
+            nickname: document.getElementById('r_nick').value, 
+            password: document.getElementById('r_pass').value,
+            email: "user@example.com" // Временная заглушка для совместимости
         };
+        const res = await fetch('/api/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
+        if (res.ok) location.reload(); else alert("Ошибка регистрации");
+    }
 
-        // Отрисовка одной записи в списке истории
-        function renderEntry(data) {
-            const div = document.createElement('div');
-            div.className = 'entry';
-            div.innerHTML = `
-            <div><b>${data.date}</b> | Оценка: ${data.score}</div>
-            <i>"${data.word}"</i>
-            <small>${data.why}</small>
-        `;
-            document.getElementById('historyList').appendChild(div);
+    async function logout() {
+        await fetch('/api/logout');
+        location.reload();
+    }
+
+    window.onload = async () => {
+        const res = await fetch('/api/mood');
+        if (res.ok) {
+            const data = await res.json();
+            document.getElementById('appContent').classList.remove('hidden');
+            document.getElementById('guestMsg').classList.add('hidden');
+            document.getElementById('guestZone').classList.add('hidden');
+            document.getElementById('userInfo').classList.remove('hidden');
+            document.getElementById('userNick').innerText = data.nickname;
+            data.logs.forEach(renderEntry);
         }
+    };
 
-        // Сохранение записи настроения
-        document.getElementById('submit').onclick = async () => {
-            const happyVal = document.querySelector('input[name="happy"]:checked');
-            const entry = {
-                score: moodRange.value,
-                word: document.getElementById('oneWord').value.trim() || '—',
-                why: document.getElementById('whyNote').value.trim() || '—',
-                happy: happyVal ? happyVal.value : '?',
-                // Формат даты с годом
-                date: new Date().toLocaleString([], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-            };
-            const res = await fetch('/api/mood', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(entry)
-            });
-            if (res.ok) { location.reload(); }
+    function renderEntry(data) {
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `<b>${data.date}</b> — Настроение: ${data.score}<br><i>${data.word}</i>`;
+        document.getElementById('historyList').appendChild(div);
+    }
+
+    document.getElementById('submit').onclick = async () => {
+        const entry = {
+            score: moodRange.value,
+            word: document.getElementById('oneWord').value,
+            why: document.getElementById('whyNote').value,
+            happy: '?',
+            date: new Date().toLocaleString([], {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})
         };
-    </script>
+        const res = await fetch('/api/mood', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(entry) });
+        if (res.ok) location.reload();
+    };
+</script>
 
 </body>
-
 </html>
