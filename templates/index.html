@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,14 +24,15 @@
         header {
             background: var(--primary);
             width: 100%;
-            height: 55px; /* Фиксированная небольшая высота */
+            height: 55px;
+            /* Фиксированная небольшая высота */
             position: fixed;
             top: 0;
             left: 0;
             z-index: 1000;
             display: flex;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
@@ -59,14 +61,18 @@
         }
 
         /* Группы Входа и Юзера внутри бара */
-        #guestZone, #loginForm, #regForm, #userInfo {
+        #guestZone,
+        #loginForm,
+        #regForm,
+        #userInfo {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         /* Одинаковые инпуты и кнопки в шапке */
-        .user-bar input, .user-bar button {
+        .user-bar input,
+        .user-bar button {
             height: 32px;
             border-radius: 6px;
             border: none;
@@ -102,13 +108,13 @@
         }
 
         .logout-link {
-            border: 1px solid rgba(255,255,255,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             padding: 4px 12px;
             border-radius: 6px;
         }
 
         .logout-link:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* --- КАРТОЧКА --- */
@@ -116,156 +122,236 @@
             background: white;
             padding: 2rem;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
             width: 90%;
             max-width: 450px;
             margin-top: 100px;
             margin-bottom: 50px;
         }
 
-        .hidden { display: none !important; }
+        .hidden {
+            display: none !important;
+        }
 
         /* Стили формы */
-        .field { margin-bottom: 1.2rem; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
-        input[type="range"] { width: 100%; accent-color: var(--primary); }
-        textarea, input[type="text"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        
-        button#submit { 
-            background: var(--primary); color: white; border: none; padding: 14px; 
-            border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; 
+        .field {
+            margin-bottom: 1.2rem;
         }
 
-        .entry { background: #fafafa; padding: 12px; border-radius: 10px; margin-bottom: 10px; border: 1px solid #eee; font-size: 0.9rem; }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+
+        textarea,
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button#submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .entry {
+            background: #fafafa;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        /* Специальные правила для экранов уже 600px (смартфоны) */
+        @media (max-width: 600px) {
+
+            /* 1. Уменьшаем отступы в шапке, чтобы выиграть место */
+            .header-content {
+                padding: 0 10px;
+            }
+
+            /* 2. Делаем логотип короче или скрываем его, если совсем не лезет */
+            .logo {
+                font-size: 0.9rem;
+                margin-right: 5px;
+            }
+
+            /* 3. Сужаем поля ввода, чтобы они поместились */
+            .user-bar input {
+                width: 70px;
+                /* Было 110, стало 70 */
+                font-size: 0.75rem;
+                /* Чуть меньше шрифт */
+                margin-left: 4px;
+            }
+
+            /* 4. Кнопка "Войти" — делаем компактнее */
+            .user-bar button {
+                padding: 0 8px;
+                font-size: 0.75rem;
+            }
+
+            /* 5. Убираем текст "Регистрация", оставляя только "Рег." или иконку (по желанию) 
+       Но пока просто уменьшим шрифт ссылки */
+            .user-bar a {
+                font-size: 0.7rem;
+                margin-left: 5px;
+            }
+
+            /* 6. Если ты вошел: прячем слово "Привет", оставляем только имя */
+            #userInfo span b::before {
+                content: "";
+                /* Убираем лишний текст программно */
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<header>
-    <div class="header-content">
-        <div class="logo">Mood Tracker</div>
-        
-        <div class="user-bar">
-            <!-- Зона для гостей: видна, когда не вошли -->
-            <div id="guestZone">
-                <div id="loginForm">
-                    <input type="text" id="l_login" placeholder="Логин">
-                    <input type="password" id="l_pass" placeholder="Пароль">
-                    <button onclick="login()">Войти</button>
-                    <a href="#" onclick="toggleAuth()">Регистрация</a>
+    <header>
+        <div class="header-content">
+            <div class="logo">Mood Tracker</div>
+
+            <div class="user-bar">
+                <!-- Зона для гостей: видна, когда не вошли -->
+                <div id="guestZone">
+                    <div id="loginForm">
+                        <input type="text" id="l_login" placeholder="Логин">
+                        <input type="password" id="l_pass" placeholder="Пароль">
+                        <button onclick="login()">Войти</button>
+                        <a href="#" onclick="toggleAuth()">Регистрация</a>
+                    </div>
+                    <div id="regForm" class="hidden">
+                        <input type="text" id="r_login" placeholder="Логин">
+                        <input type="text" id="r_nick" placeholder="Имя">
+                        <input type="password" id="r_pass" placeholder="Пароль">
+                        <button onclick="register()">Создать</button>
+                        <a href="#" onclick="toggleAuth()">Назад</a>
+                    </div>
                 </div>
-                <div id="regForm" class="hidden">
-                    <input type="text" id="r_login" placeholder="Логин">
-                    <input type="text" id="r_nick" placeholder="Имя">
-                    <input type="password" id="r_pass" placeholder="Пароль">
-                    <button onclick="register()">Создать</button>
-                    <a href="#" onclick="toggleAuth()">Назад</a>
+
+                <!-- Зона пользователя: видна только после входа -->
+                <div id="userInfo" class="hidden">
+                    <span>Привет, <b id="userNick"></b></span>
+                    <a href="#" class="logout-link" onclick="logout()">Выйти</a>
                 </div>
             </div>
+        </div>
+    </header>
 
-            <!-- Зона пользователя: видна только после входа -->
-            <div id="userInfo" class="hidden">
-                <span>Привет, <b id="userNick"></b></span>
-                <a href="#" class="logout-link" onclick="logout()">Выйти</a>
+    <div class="card">
+        <!-- Основной контент (скрыт для гостей) -->
+        <div id="appContent" class="hidden">
+            <h2 style="text-align: center; margin-top: 0;">Как ты сейчас?</h2>
+            <div class="field">
+                <label>Настроение: <span id="moodVal">5</span></label>
+                <input type="range" id="moodRange" min="1" max="10" value="5">
+            </div>
+            <div class="field">
+                <label>Одним словом:</label>
+                <input type="text" id="oneWord" placeholder="...">
+            </div>
+            <div class="field">
+                <label>Почему?</label>
+                <textarea id="whyNote" rows="2"></textarea>
+            </div>
+            <button id="submit">Сохранить</button>
+
+            <div style="margin-top: 25px;">
+                <b>История:</b>
+                <div id="historyList" style="margin-top: 10px;"></div>
             </div>
         </div>
-    </div>
-</header>
 
-<div class="card">
-    <!-- Основной контент (скрыт для гостей) -->
-    <div id="appContent" class="hidden">
-        <h2 style="text-align: center; margin-top: 0;">Как ты сейчас?</h2>
-        <div class="field">
-            <label>Настроение: <span id="moodVal">5</span></label>
-            <input type="range" id="moodRange" min="1" max="10" value="5">
-        </div>
-        <div class="field">
-            <label>Одним словом:</label>
-            <input type="text" id="oneWord" placeholder="...">
-        </div>
-        <div class="field">
-            <label>Почему?</label>
-            <textarea id="whyNote" rows="2"></textarea>
-        </div>
-        <button id="submit">Сохранить</button>
-
-        <div style="margin-top: 25px;">
-            <b>История:</b>
-            <div id="historyList" style="margin-top: 10px;"></div>
+        <!-- Заглушка для гостей -->
+        <div id="guestMsg" style="text-align: center; color: #888;">
+            Пожалуйста, войдите, чтобы вести дневник.
         </div>
     </div>
 
-    <!-- Заглушка для гостей -->
-    <div id="guestMsg" style="text-align: center; color: #888;">
-        Пожалуйста, войдите, чтобы вести дневник.
-    </div>
-</div>
+    <script>
+        const moodRange = document.getElementById('moodRange');
+        const moodVal = document.getElementById('moodVal');
+        moodRange.oninput = () => moodVal.innerText = moodRange.value;
 
-<script>
-    const moodRange = document.getElementById('moodRange');
-    const moodVal = document.getElementById('moodVal');
-    moodRange.oninput = () => moodVal.innerText = moodRange.value;
-
-    function toggleAuth() {
-        document.getElementById('loginForm').classList.toggle('hidden');
-        document.getElementById('regForm').classList.toggle('hidden');
-    }
-
-    async function login() {
-        const data = { login: document.getElementById('l_login').value, password: document.getElementById('l_pass').value };
-        const res = await fetch('/api/login', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-        if (res.ok) location.reload(); else alert("Ошибка входа");
-    }
-
-    async function register() {
-        const data = { 
-            login: document.getElementById('r_login').value, 
-            nickname: document.getElementById('r_nick').value, 
-            password: document.getElementById('r_pass').value,
-            email: "user@example.com" // Временная заглушка для совместимости
-        };
-        const res = await fetch('/api/register', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) });
-        if (res.ok) location.reload(); else alert("Ошибка регистрации");
-    }
-
-    async function logout() {
-        await fetch('/api/logout');
-        location.reload();
-    }
-
-    window.onload = async () => {
-        const res = await fetch('/api/mood');
-        if (res.ok) {
-            const data = await res.json();
-            document.getElementById('appContent').classList.remove('hidden');
-            document.getElementById('guestMsg').classList.add('hidden');
-            document.getElementById('guestZone').classList.add('hidden');
-            document.getElementById('userInfo').classList.remove('hidden');
-            document.getElementById('userNick').innerText = data.nickname;
-            data.logs.forEach(renderEntry);
+        function toggleAuth() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('regForm').classList.toggle('hidden');
         }
-    };
 
-    function renderEntry(data) {
-        const div = document.createElement('div');
-        div.className = 'entry';
-        div.innerHTML = `<b>${data.date}</b> — Настроение: ${data.score}<br><i>${data.word}</i>`;
-        document.getElementById('historyList').appendChild(div);
-    }
+        async function login() {
+            const data = { login: document.getElementById('l_login').value, password: document.getElementById('l_pass').value };
+            const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            if (res.ok) location.reload(); else alert("Ошибка входа");
+        }
 
-    document.getElementById('submit').onclick = async () => {
-        const entry = {
-            score: moodRange.value,
-            word: document.getElementById('oneWord').value,
-            why: document.getElementById('whyNote').value,
-            happy: '?',
-            date: new Date().toLocaleString([], {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'})
+        async function register() {
+            const data = {
+                login: document.getElementById('r_login').value,
+                nickname: document.getElementById('r_nick').value,
+                password: document.getElementById('r_pass').value,
+                email: "user@example.com" // Временная заглушка для совместимости
+            };
+            const res = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+            if (res.ok) location.reload(); else alert("Ошибка регистрации");
+        }
+
+        async function logout() {
+            await fetch('/api/logout');
+            location.reload();
+        }
+
+        window.onload = async () => {
+            const res = await fetch('/api/mood');
+            if (res.ok) {
+                const data = await res.json();
+                document.getElementById('appContent').classList.remove('hidden');
+                document.getElementById('guestMsg').classList.add('hidden');
+                document.getElementById('guestZone').classList.add('hidden');
+                document.getElementById('userInfo').classList.remove('hidden');
+                document.getElementById('userNick').innerText = data.nickname;
+                data.logs.forEach(renderEntry);
+            }
         };
-        const res = await fetch('/api/mood', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(entry) });
-        if (res.ok) location.reload();
-    };
-</script>
+
+        function renderEntry(data) {
+            const div = document.createElement('div');
+            div.className = 'entry';
+            div.innerHTML = `<b>${data.date}</b> — Настроение: ${data.score}<br><i>${data.word}</i>`;
+            document.getElementById('historyList').appendChild(div);
+        }
+
+        document.getElementById('submit').onclick = async () => {
+            const entry = {
+                score: moodRange.value,
+                word: document.getElementById('oneWord').value,
+                why: document.getElementById('whyNote').value,
+                happy: '?',
+                date: new Date().toLocaleString([], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+            };
+            const res = await fetch('/api/mood', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(entry) });
+            if (res.ok) location.reload();
+        };
+    </script>
 
 </body>
+
 </html>
