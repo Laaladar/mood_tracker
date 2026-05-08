@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "mood-tracker",
+			"path": "."
+		},
+		{
+			"name": "technical_docs",
+			"path": "../../../Projects/Services/Mood_Tracker/technical_docs"
+		}
+	],
+	"settings": {}
+}
